@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Server Interaction</title>
+</head>
+<body>
+
+<h1>Go Server Interaction</h1>
+
+<button onclick="sendSingleRequest()">Process Single (Sequential)</button>
+<button onclick="sendConcurrentRequest()">Process Concurrent</button>
+
+<script>
+function sendSingleRequest() {
+    var payload = {
+        to_sort: [
+            [3, 1, 2],
+            [6, 4, 5],
+            [9, 7, 8]
+        ]
+    };
+
+    fetch('http://localhost:8000/process-single', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Response from /process-single:', data);
+        alert('Response from /process-single: ' + JSON.stringify(data));
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error: ' + error.message);
+    });
+}
+
+function sendConcurrentRequest() {
+    var payload = {
+        to_sort: [
+            [3, 1, 2],
+            [6, 4, 5],
+            [9, 7, 8]
+        ]
+    };
+
+    fetch('http://localhost:8000/process-concurrent', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Response from /process-concurrent:', data);
+        alert('Response from /process-concurrent: ' + JSON.stringify(data));
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error: ' + error.message);
+    });
+}
+</script>
+
+</body>
+</html>
